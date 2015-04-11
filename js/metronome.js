@@ -1,18 +1,11 @@
 var context = new AudioContext();
-var tickSound;
 var getSound = new XMLHttpRequest();
 var isPlaying = false;		//Esta activo el metronomo
 var metroBPM;
 var metronomo;
+var signature = 4;
+var timeCount = 0;
 
-getSound.open("GET", "media/tick.wav", true);
-getSound.responseType = "arraybuffer"; // Read as Binary Data
-getSound.onload = function() { 
-	context.decodeAudioData(getSound.response, function(buffer){ 
-		tickSound = buffer; //Decodificar audio y guardar
-	});
-}
-getSound.send(); //Mandar request
 
 //Compatibilidad para pricision timing
 if (window.performance.now) {
@@ -28,8 +21,17 @@ if (window.performance.now) {
     }
 }
 
+//Load Sounds
+var SoundSources = function() {
+  loadSounds(this, {
+    tick: 'media/tick.wav',
+    blip: 'media/blip.wav'
+  });
+};
+
+var sounds = new SoundSources();
+
 //Variables para timing
-var now;
 var then = getTimestamp();
 var delta;
 
@@ -38,46 +40,43 @@ $("document").ready(function(){
 	$("#upTempo").click(function(){
 		var val = parseInt($("#tempo").val());
 		$("#tempo").val(val+8);
+		setBPM(parseInt($("#tempo").val()));
 	});
 
 	$("#downTempo").click(function(){
 		var val = parseInt($("#tempo").val());
 		$("#tempo").val(val-8);
+		setBPM(parseInt($("#tempo").val()));
 	});
 
 	$("#play").click(function(){
 		if(isPlaying) {
-			//stopMetronome();
+			//stop Metronome
 			$("#play").html("Play");
-			isPlaying = false;
+			stopMetronome();
 		}
 		else {
-			//startMetronome();
+			//start Metronome
 			$("#play").html("Stop");
-			isPlaying = true;
-			repeatMetronome();
+			startMetronome();
 		}
 	});
 
 	$("#tempo").change(function(){
-		setBPM($("#tempo").val());
+		setBPM(parseInt($("#tempo").val()));
 	});
 
-	$("#tempo").val(120);
-});
+	$("#signature").change(function(){
+		signature = parseInt($("#signature").val());
+	});
 
-//Funciones de metronomo
-function play(sound) {
-	var playSound = context.createBufferSource();
-	playSound.buffer = sound;
-	playSound.connect(context.destination);
-	playSound.start(0);
-	console.log("Sound played");
-}
+	initValues();
+	
+});
 
 function setBPM (bpm) {
 	metroBPM = 60000 / bpm - 0; 	// -1 para compensar el setTimeOut
-	console.log("BPM: " + metroBPM);
+	console.log("BPM: " + metroBPM + " ms");
 }
 
 function repeatMetronome() {
@@ -86,21 +85,38 @@ function repeatMetronome() {
 		delta = now - then;
 
 		if(delta > metroBPM) {
-			play(tickSound);
+			if (++timeCount < signature && timeCount != 0) {
+				playSound(sounds.tick, 0);
+			}
+			else {
+				playSound(sounds.blip, 0);
+				timeCount = 0;
+			}
+				
 			then = now - (delta % metroBPM)
 		}
 
-		console.log(delta);
+		//console.log(delta);
 	if (isPlaying) setTimeout(function(){repeatMetronome()}, 0);
 	
 }
 
-/*
+function initValues() {
+	$("#tempo").val(120);
+	setBPM(120);
+
+	$("#signature").val(4);
+	signature = 4;
+};
+
 function startMetronome() {
-	metronomo = setInterval(function(){play(tickSound)}, metroBPM);
+	isPlaying = true;
+	playSound(sounds.blip, 0);
+	then = getTimestamp();
+	repeatMetronome();
 }
 
-function stopMetronome() {
-	clearInterval(metronomo);
+function stopMetronome(){
+	isPlaying = false;
+	timeCount = 0;
 }
-*/
