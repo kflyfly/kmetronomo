@@ -1,9 +1,8 @@
-var context = new AudioContext();
-var getSound = new XMLHttpRequest();
 var isPlaying = false;		//Esta activo el metronomo
 var metroBPM;
 var metronomo;
-var signature = 4;
+var sigUpper = 4;
+var sigLower = 4;
 var timeCount = 0;
 
 
@@ -66,8 +65,23 @@ $("document").ready(function(){
 		setBPM(parseInt($("#tempo").val()));
 	});
 
-	$("#signature").change(function(){
-		signature = parseInt($("#signature").val());
+	$("#sigUpper").change(function(){
+		sigUpper = parseInt($("#sigUpper").val());
+	});
+
+	$("#sigLower").change(function(){
+		var tmp = parseInt($("#sigLower").val());
+		if (tmp - sigLower > 0) {
+			sigLower *= 2;
+			metroBPM /= 2;
+		}
+		else if(tmp - sigLower < 0){
+			sigLower /= 2;
+			metroBPM *= 2;
+		}
+		console.log("BPM: " + metroBPM + " ms");
+		$("#sigLower").val(sigLower);
+		//setBPM();
 	});
 
 	initValues();
@@ -75,7 +89,7 @@ $("document").ready(function(){
 });
 
 function setBPM (bpm) {
-	metroBPM = 60000 / bpm - 0; 	// -1 para compensar el setTimeOut
+	metroBPM = (60000 / bpm) / (sigLower / 4);
 	console.log("BPM: " + metroBPM + " ms");
 }
 
@@ -85,7 +99,7 @@ function repeatMetronome() {
 		delta = now - then;
 
 		if(delta > metroBPM) {
-			if (++timeCount < signature && timeCount != 0) {
+			if (++timeCount < sigUpper && timeCount != 0) {
 				playSound(sounds.tick, 0);
 			}
 			else {
@@ -105,8 +119,11 @@ function initValues() {
 	$("#tempo").val(120);
 	setBPM(120);
 
-	$("#signature").val(4);
-	signature = 4;
+	$("#sigUpper").val(4);
+	sigUpper = 4;
+
+	$("#sigLower").val(4);
+	sigUpper = 4;
 };
 
 function startMetronome() {
@@ -119,4 +136,20 @@ function startMetronome() {
 function stopMetronome(){
 	isPlaying = false;
 	timeCount = 0;
+}
+
+function drawRects() {
+	//TODO: Disminuir margen al aumentar el denominador del tiempo
+	var margin = 20;
+	var c = document.getElementById("myCanvas");
+	var ctx = c.getContext("2d");
+	var rectWidth = (c.width - margin) / sigLower - margin;
+	var maxHeight = c.height
+
+	for (var i = 0; i < sigLower; i++) {
+		var xStart = (rectWidth+margin) * i + margin;
+		var xEnd = xStart + rectWidth;
+		ctx.fillStyle = "#"+((1<<24)*Math.random()|0).toString(16);
+		ctx.fillRect(xStart, margin, rectWidth, 60);	
+	}
 }
