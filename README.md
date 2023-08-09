@@ -1,5 +1,5 @@
 ## Metronome
 
-This metronome uses the web audio api.
-specially optimized for mobile users
-增加了手机端网页版使用体验
+This is a simple web metronome，specially optimized for mobile users， you can add this website to your home screen
+这是一个便携简易的网页版节拍器，专门针对手机浏览器通过安装屏幕方式进行了优化。
+
