@@ -21,7 +21,7 @@
             margin: 0 auto; 
         }
 
-        input[type="number"], button, select {
+        input[type="number"], button {
             font-size: 12vw;
             width: 100%;
             border-radius: 15px; 
@@ -44,6 +44,17 @@
 
         #time-signature select {
             width: 30%;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding: 0.5em;
+            background: transparent;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><polygon fill="%23444444" points="5,5 0,0 10,0"></polygon></svg>');
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: 40px 30px;
+            border: none;
+            font-size: 12vw;
         }
 
         #bpm-controls {
