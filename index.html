@@ -3,6 +3,7 @@
 
 <head>
     <title>Metronome</title>
+    <meta charset="UTF-8">
     <style type="text/css">
         body {
             background-color: #eaf7f1;
@@ -20,8 +21,8 @@
             margin: 0 auto; 
         }
 
-        input[type="number"], button {
-            font-size: 12vw; //修改此行，将字体大小调整为你需要的大小
+        input[type="number"], button, select {
+            font-size: 12vw;
             width: 100%;
             border-radius: 15px; 
             border: 1px solid transparent;
@@ -41,8 +42,8 @@
             gap: 10px;
         }
 
-        #time-signature input[type="number"] {
-            width: 20%;
+        #time-signature select {
+            width: 30%;
         }
 
         #bpm-controls {
@@ -58,21 +59,21 @@
 
         #play {
             background: linear-gradient(to right, #ff7f00, #ff5500);
-            border-radius: 50%; /* 圆形按钮 */
+            border-radius: 50%;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             border: none;
-            width: 30vw; /* 按钮宽度设为视口宽度的30% */
-            height: 30vw; /* 按钮高度设为视口宽度的30% */
-            font-size: 6vw; /* 字体大小设为视口宽度的6% */
-            cursor: pointer; /* 鼠标悬停时显示为指针 */
+            width: 30vw;
+            height: 30vw;
+            font-size: 6vw;
+            cursor: pointer;
             margin: 0 auto;
         }
 
         #play:hover {
-            background: linear-gradient(to right, #ff5500, #ff2a00); /* 鼠标悬停时颜色变深 */
+            background: linear-gradient(to right, #ff5500, #ff2a00);
         }
     </style>
 
@@ -91,9 +92,34 @@
             Time Signature<br />
             <div>&nbsp;</div>
             <div id="time-signature">
-                <input type='number' id='sigUpper' min='1' max='500'>
+                <select id='sigUpper'>
+                    <option value='1'>1</option>
+                    <option value='2'>2</option>
+                    <option value='3'>3</option>
+                    <option value='4' selected>4</option>
+                    <option value='5'>5</option>
+                    <option value='6'>6</option>
+                    <option value='7'>7</option>
+                    <option value='8'>8</option>
+                    <option value='9'>9</option>
+                    <option value='10'>10</option>
+                    <option value='11'>11</option>
+                    <option value='12'>12</option>
+                    <option value='13'>13</option>
+                    <option value='14'>14</option>
+                    <option value='15'>15</option>
+                    <option value='16'>16</option>
+                </select>
                 <span>/</span>
-                <input type='number' id='sigLower' min='1' max='64'>
+                <select id='sigLower'>
+                    <option value='1'>1</option>
+                    <option value='2'>2</option>
+                    <option value='4' selected>4</option>
+                    <option value='6'>6</option>
+                    <option value='8'>8</option>                    
+                    <option value='16'>16</option>
+                    <option value='32'>32</option>
+                </select>
             </div>
         </div>
         
