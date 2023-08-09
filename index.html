@@ -1,10 +1,79 @@
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
     <title>Metronome</title>
     <style type="text/css">
-    	div {text-align : center;}
+        body {
+            background-color: #eaf7f1;
+            font-size: 8vw; /* 基础字体大小设为视口宽度的4% */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #content {
+            text-align: center;
+            width: 80vw; /* 宽度设为视口宽度的80% */
+            margin: 0 auto; /* 居中对齐 */
+        }
+
+        input[type="number"], button {
+            font-size: 1em; /* 使用相对于基础字体大小的单位 */
+            width: 100%;
+            border-radius: 15px; /* 圆润的边框 */
+            border: 1px solid transparent;
+            background-color: rgba(255, 255, 255, 0.5); /* 透明的背景色 */
+            padding: 5px; /* 增大内部间距 */
+            text-align: center; /* 文字居中 */
+        }
+
+        .control-group {
+            margin-bottom: 40px; /* 增大行间距 */
+        }
+
+        #time-signature {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #time-signature input[type="number"] {
+            width: 20%;
+        }
+
+        #bpm-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #bpm-controls input[type="number"], 
+        #bpm-controls button {
+            width: 30%;
+        }
+
+        #play {
+            background: linear-gradient(to right, #ff7f00, #ff5500);
+            border-radius: 50%; /* 圆形按钮 */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            width: 30vw; /* 按钮宽度设为视口宽度的30% */
+            height: 30vw; /* 按钮高度设为视口宽度的30% */
+            font-size: 6vw; /* 字体大小设为视口宽度的6% */
+            cursor: pointer; /* 鼠标悬停时显示为指针 */
+            margin: 0 auto;
+        }
+
+        #play:hover {
+            background: linear-gradient(to right, #ff5500, #ff2a00); /* 鼠标悬停时颜色变深 */
+        }
     </style>
 
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -13,29 +82,35 @@
 </head>
 
 <body>
-	<div id="center">
-    	<h1>Web Audio API Metronome</h1>
+    <div id ="content">
+        <div id="center">
+            <h1>Metronome</h1>
+        </div>
+        
+        <div class="control-group">
+            Time Signature<br />
+            <div>&nbsp;</div>
+            <div id="time-signature">
+                <input type='number' id='sigUpper' min='1' max='500'>
+                <span>/</span>
+                <input type='number' id='sigLower' min='1' max='64'>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            BPM<br />
+
+            <div id="bpm-controls">
+                <button id="downTempo"> - </button>
+                <input type="number" id="tempo" min="1" max="500" value="120">
+                <button id="upTempo"> + </button>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <button id ="play"> Play </button><br /><br />
+        </div>
     </div>
-    <div id="center">
-    	Time Signature
-    	<p>
-		<input type="number" id="sigUpper" min="1" max="500"> / 
-        <input type="number" id="sigLower" min="1" max="64"> 
-		<p>
-	</div>
-	<div id="center">
-		BPM
-    	<p>
-	    <button id="downTempo"> - </button>
-	    <input type="number" id="tempo" min="1" max="500">
-	    <button id="upTempo"> + </button>
-	    <br>
-	    <button id="play"> Play </button>
-        <br>
-        <br>
-        <canvas id="myCanvas" width="500" height="100" style="border:1px solid #d3d3d3;">
-            Your browser does not support the HTML5 canvas tag.</canvas>
-	</div>
 </body>
 
 </html>
